@@ -18,7 +18,7 @@ import (
 func Test_SimpleConnect(t *testing.T) {
 
 	connectionString := os.Getenv("MONGO_CONNECTION_STRING")
-	//dbName := os.Getenv("MONGO_DATABASE")
+	dbName := os.Getenv("MONGO_DATABASE")
 
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(connectionString))
@@ -28,7 +28,7 @@ func Test_SimpleConnect(t *testing.T) {
 	}
 	err = client.Ping(ctx, readpref.Primary())
 
-	collection := client.Database("testing_gomongo").Collection("numbers")
+	collection := client.Database(dbName).Collection("numbers")
 
 	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
 	res, err := collection.InsertOne(ctx, bson.M{"name": "pi", "value": 3.14159})

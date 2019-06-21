@@ -1,0 +1,17 @@
+
+platform: linux
+
+image_resource:
+  type: registry-image
+  source: {repository: golang}
+
+inputs:
+- name: gomongo
+  path: gopath/src/gopath/src/github.com/mchirico/gomongo
+
+caches:
+- path: depspath/
+- path: gopath/pkg/
+
+run:
+  path: gopath/src/gopath/src/github.com/mchirico/gomongo/ci/docker.sh

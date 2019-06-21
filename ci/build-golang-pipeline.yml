@@ -1,0 +1,44 @@
+
+resources:
+
+- name: gomongo
+  type: git
+  source:
+    uri: https://github.com/mchirico/gomongo.git
+    branch: master
+
+###############################################################################
+
+jobs:
+
+- name: unit
+  plan:
+  - get: gomongo
+    trigger: true
+  - task: unit
+    file: gomongo/ci/unit-task.yml
+
+- name: build
+  plan:
+  - get: gomongo
+    trigger: true
+    passed: [unit]
+  - task: build
+    file: gomongo/ci/build-task.yml
+
+- name: inform
+  plan:
+  - get: gomongo
+    trigger: true
+    passed: [build]
+  - task: inform
+    file: gomongo/ci/inform-task.yml
+
+- name: docker
+  plan:
+  - get: gomongo
+    trigger: true
+    passed: [inform]
+  - task: docker
+    file: gomongo/ci/docker-task.yml
+
