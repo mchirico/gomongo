@@ -68,3 +68,7 @@ func Test_SimpleConnect(t *testing.T) {
 
 	collection.Drop(ctx)
 }
+
+func TestExample(t *testing.T) {
+	Example()
+}
