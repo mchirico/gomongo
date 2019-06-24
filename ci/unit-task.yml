@@ -15,3 +15,6 @@ caches:
 run:
   path: gopath/src/gopath/src/github.com/mchirico/gomongo/ci/unit.sh
 
+params:
+  MONGO_CONNECTION_STRING: ((mongo_connection_string))
+  MONGO_DATABASE: ((mongo_database))
