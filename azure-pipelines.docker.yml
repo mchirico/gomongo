@@ -1,0 +1,44 @@
+# Docker image
+# Build a Docker image to run, deploy, or push to a container registry.
+# Add steps that use Docker Compose, tag images, push to a registry, run an image, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+pool:
+  vmImage: 'ubuntu-16.04' # examples of other options: 'macOS-10.13', 'vs2017-win2016'
+
+variables:
+  GOBIN:  '$(GOPATH)/bin' # Go binaries path
+  GOROOT: '/usr/local/go1.11' # Go installation path
+  GOPATH: '$(system.defaultWorkingDirectory)/gopath' # Go workspace path
+  GOMAXPROCS: 9
+  modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
+
+steps:
+- script: |
+    mkdir -p '$(GOBIN)'
+    mkdir -p '$(GOPATH)/pkg'
+    mkdir -p '$(modulePath)'
+    shopt -s extglob
+    mv !(gopath) '$(modulePath)'
+    echo '##vso[task.prependpath]$(GOBIN)'
+    echo '##vso[task.prependpath]$(GOROOT)/bin'
+    echo 'Variables:'
+    echo ${MONGO_DATABASE}
+  displayName: 'Set up the Go workspace'
+
+- script: go get -v -t -d ./...
+  workingDirectory: '$(modulePath)'
+  displayName: 'go get dependencies'
+
+- script: go build -v .
+  workingDirectory: '$(modulePath)'
+  displayName: 'Build'
+
+- script: go test -race -v ./...
+  env:
+    MONGO_DATABASE: $(MONGO_DATABASE)
+    MONGO_CONNECTION_STRING: $(MONGO_CONNECTION_STRING)    
+  workingDirectory: '$(modulePath)'
+  displayName: 'Run tests'
+
+

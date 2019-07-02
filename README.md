@@ -2,6 +2,7 @@
 
 
 [![Build Status](https://travis-ci.org/mchirico/gomongo.svg?branch=master)](https://travis-ci.org/mchirico/gomongo)
+[![Build Status](https://mchirico.visualstudio.com/gomongo/_apis/build/status/mchirico.gomongo?branchName=master)](https://mchirico.visualstudio.com/gomongo/_build/latest?definitionId=2&branchName=master)
 [![codecov](https://codecov.io/gh/mchirico/gomongo/branch/master/graph/badge.svg)](https://codecov.io/gh/mchirico/gomongo)
 # gomongo
 
